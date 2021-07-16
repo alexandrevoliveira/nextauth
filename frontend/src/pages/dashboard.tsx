@@ -6,7 +6,7 @@ export default function dashboard() {
   const { user } = useAuth()
 
   useEffect(() => {
-    api.get('me')
+    api.get('/me')
     .then(response => console.log(response))
     .catch(err => console.log(err))
   }, [])

@@ -1,3 +1,5 @@
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 import { FormEvent, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/Home.module.css';
@@ -27,4 +29,22 @@ export default function Home() {
       <button type="submit">Entrar</button>
     </form>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = parseCookies(ctx);
+
+  if(cookies['nextauth.token']) {
+    return {
+      redirect: {
+        destination: '/dashboard'
+      }
+    }
+  }
+
+  return {
+    props: {
+
+    }
+  }
 }
