@@ -5,7 +5,7 @@ export function withSSRAuth<P>(fn: GetServerSideProps<P>) {
   return async (ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<P>> => {
     const cookies = parseCookies()
 
-    if(cookies['nextauth.token']) {
+    if(!cookies['nextauth.token']) {
       return {
         redirect: {
           destination: '/dashboard',
