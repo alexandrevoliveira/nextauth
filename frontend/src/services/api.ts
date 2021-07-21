@@ -4,7 +4,7 @@ import { signOut } from '../contexts/AuthContext';
 import { AuthTokenError } from './errors/AuthTokenError';
 
 let isRefreshing = false;
-let failedResquestsQueue = [];
+let failedRequestsQueue = [];
 
 export function setupAPIClient(ctx = undefined) {
   let cookies = parseCookies(ctx);
@@ -45,11 +45,11 @@ export function setupAPIClient(ctx = undefined) {
     
             api.defaults.headers['Authorization'] = `Bearer ${token}`;
   
-            failedResquestsQueue.forEach(request => request.onSuccess(token))
-            failedResquestsQueue = [];
+            failedRequestsQueue.forEach(request => request.onSuccess(token))
+            failedRequestsQueue = [];
           }).catch(err => { 
-            failedResquestsQueue.forEach(request => request.onFailure(err))
-            failedResquestsQueue = [];
+            failedRequestsQueue.forEach(request => request.onFailure(err))
+            failedRequestsQueue = [];
   
             if(process.browser) {
               signOut()
@@ -62,7 +62,7 @@ export function setupAPIClient(ctx = undefined) {
         }
   
         return new Promise((resolve, reject) => {
-          failedResquestsQueue.push({
+          failedRequestsQueue.push({
             onSuccess: (token: string) => {
               originalConfig.headers['Authorization'] = `Bearer ${token}`;
   
